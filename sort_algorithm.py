@@ -268,6 +268,7 @@ class AVLTree(BinarySearchTree):
             B.parent = x
         self.update_all_heights_upwards(x)
 
+
     def check_fix_AVL(self, node):
         if node is None:
             return
