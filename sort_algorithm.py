@@ -297,9 +297,9 @@ def count_sort(array):
     dict={}
     for i in array:
         if i in dict:
-            dict[i]+=1
+            dict[i]+ = 1
         else:
-            dict[i]=1
+            dict[i] = 1
     new_dict_keys=sorted(dict)
     res=[]
     for j in new_dict_keys:
