@@ -28,14 +28,18 @@ def load_file():
         st.session_state['df'] = pd.read_csv(uploaded_file, header=0)
         st.success("Upload successfully!")
     if default:
-        st.session_state['df'] = pd.read_csv('TDCS_M06A_20190830_080000.csv',
-                                             names=['VehicleType', 'DerectionTime_O', 'GantryID_O',
-                                                    'DerectionTime_D', 'GantryID_D', 'TripLength',
-                                                    'TripEnd', 'TripInformation'])
-    df = st.session_state['df']
-    i = st.slider('Slide to preview the data', 0, len(df)-10, 0)
-    st.caption(f'{i+1}~{i+10} rows of dataframe:')
-    AgGrid(df.iloc[i:i+10, :])
+        try:
+            st.session_state['df'] = pd.read_csv('TDCS_M06A_20190830_080000.csv',
+                                                 names=['VehicleType', 'DerectionTime_O', 'GantryID_O',
+                                                        'DerectionTime_D', 'GantryID_D', 'TripLength',
+                                                        'TripEnd', 'TripInformation'])
+        except:
+            st.warning("No required CSV file!")
+    if st.session_state['df'] is not None:
+        df = st.session_state['df']
+        i = st.slider('Slide to preview the data', 0, len(df)-10, 0)
+        st.caption(f'{i+1}~{i+10} rows of dataframe:')
+        AgGrid(df.iloc[i:i+10, :])
 
 
 def search_file(df):
@@ -129,11 +133,7 @@ if __name__ == '__main__':
         st.session_state['found'] = None
     # initialize default dataframe
     if 'df' not in st.session_state:
-        default_data = pd.read_csv('TDCS_M06A_20190830_080000.csv',
-                                   names=['VehicleType', 'DerectionTime_O', 'GantryID_O',
-                                          'DerectionTime_D', 'GantryID_D', 'TripLength',
-                                          'TripEnd', 'TripInformation'])
-        st.session_state['df'] = default_data
+        st.session_state['df'] = None
     # initialize default state of the page
     if 'func' not in st.session_state:
         st.session_state['func'] = 'Load'
